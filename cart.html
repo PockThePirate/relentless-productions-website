@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body onload="setBackgroundPosition()">
+    <div class="header">
+        <h1>Relentless Productions</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html" onclick="saveBackgroundPosition()">Home</a></li>
+                <li><a href="contact.html" onclick="saveBackgroundPosition()">Contact Us</a></li>
+                <li><a href="products.html" onclick="saveBackgroundPosition()">Products</a></li>
+                <li><a href="cart.html" onclick="saveBackgroundPosition()">Cart</a></li>
+                <li><a href="management.html" onclick="saveBackgroundPosition()">Management</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="container">
+        <h1>Your Cart</h1>
+        <ul id="cartItems">
+            <!-- Cart items will be displayed here -->
+        </ul>
+        <button onclick="checkout()">Checkout</button>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            cart.forEach((item, index) => {
+                let li = document.createElement('li');
+                li.textContent = `${item.product} - $${item.price}`;
+                let removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.style.marginLeft = '10px';
+                removeButton.onclick = () => {
+                    cart.splice(index, 1);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    loadCart();
+                };
+                li.appendChild(removeButton);
+                cartItems.appendChild(li);
+            });
+        }
+
+        function checkout() {
+            window.location.href = 'checkout.html';
+        }
+
+        loadCart();
+    </script>
+</body>
+</html>
